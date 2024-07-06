@@ -9,6 +9,8 @@ public class Row : MonoBehaviour
     public bool isRowStop;
     public string stoppedSloat;
     // Start is called before the first frame update
+
+
     void Start()
     {
         isRowStop = true;
@@ -40,6 +42,19 @@ public class Row : MonoBehaviour
             
          }
         //to slow down
+        isRowStop = false;
+        float startInterval = 0.0005f; // Initial time interval
+        float endInterval = 0.0099f; // Final time interval
+        int totalSteps = 10; // Total number of steps
+        float stepIncrement = (endInterval - startInterval) / (totalSteps - 1); // Calculate the increment
+
+        List<float> timeIntervals = new List<float>();
+
+        // Generate the time intervals
+        for (int i = 0; i < totalSteps; i++)
+        {
+            timeIntervals.Add(startInterval + i * stepIncrement);
+        }
 
         randomValue = Random.Range(200, 240);
         switch (randomValue % 3)
@@ -58,24 +73,12 @@ public class Row : MonoBehaviour
 
             transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y - 0.25f);
 
-            //This calculates 25% of randomValue 
-            if (i>Mathf.RoundToInt(randomValue*0.25f))
-                timeIntervel= 0.005f;
-            // //This calculates 50% of randomValue 
-            if (i > Mathf.RoundToInt(randomValue * 0.5f))
-                timeIntervel = 0.090f;
-
-            // //This calculates 75% of randomValue 
-            if (i > Mathf.RoundToInt(randomValue * 0.75f))
-                timeIntervel = 0.100f;
-            // //This calculates 95% of randomValue 
-            if (i > Mathf.RoundToInt(randomValue * 0.95f))
-                timeIntervel = 0.1f;
+            // Use the appropriate time interval from the list
+            float t = (float)i / randomValue;
+            int index = Mathf.Min(Mathf.FloorToInt(t * (totalSteps - 1)), totalSteps - 1);
+            timeIntervel = timeIntervals[index];
 
             yield return new WaitForSeconds(timeIntervel);
-
-
-
         }
         if (transform.localPosition.y == 3.5f)
             stoppedSloat = "Diamond";
