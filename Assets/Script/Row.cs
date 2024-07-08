@@ -73,17 +73,21 @@ public class Row : MonoBehaviour
         }
 
         float[] stopPosition = { -43.1f, -39.1f, -35.1f, -31.19f, -27.2f, -23.11f, -19f, -15.41f };
-        float mindistance = Mathf.Abs(transform.position.y- stopPosition[0]);
-        float closestPosition = Mathf.Abs(transform.position.y - stopPosition[0]);
+       // float mindistance = Mathf.Abs(transform.localPosition.y- stopPosition[0]);
+        float closestPosition = Mathf.Abs(transform.localPosition.y - stopPosition[0]);
 
         IEnumerator enumerator =stopPosition.GetEnumerator();
         while (enumerator.MoveNext())
         {
-            float distance = Mathf.Abs(transform.position.y -(float)enumerator.Current);
-            if((float)enumerator.Current< mindistance)
+            
+            float distance = Mathf.Abs(transform.localPosition.y -(float)enumerator.Current);
+            if(transform.localPosition.y>  (float)enumerator.Current)
+
             {
-                mindistance = distance;
-                closestPosition = (float)enumerator.Current;   
+                Debug.Log(transform.localPosition.y);
+                //  mindistance = (float)enumerator.Current;
+                closestPosition = (float)enumerator.Current;
+             
             }
         }
         transform.localPosition= new Vector2(transform.localPosition.x, closestPosition);
