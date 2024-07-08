@@ -43,18 +43,9 @@ public class Row : MonoBehaviour
          }
         //to slow down
         isRowStop = false;
-        float startInterval = 0.0005f; // Initial time interval
-        float endInterval = 0.0099f; // Final time interval
-        int totalSteps = 10; // Total number of steps
-        float stepIncrement = (endInterval - startInterval) / (totalSteps - 1); // Calculate the increment
-
-        List<float> timeIntervals = new List<float>();
-
-        // Generate the time intervals
-        for (int i = 0; i < totalSteps; i++)
-        {
-            timeIntervals.Add(startInterval + i * stepIncrement);
-        }
+        float startInterval = 0.0005f; // fastest animation star
+        float endInterval = 0.0099f; // slowest animation end
+       
 
         randomValue = Random.Range(200, 240);
         switch (randomValue % 3)
@@ -69,32 +60,48 @@ public class Row : MonoBehaviour
         for (int i = 0; i < randomValue; i++)
         {
             if (transform.localPosition.y <= -43f)
-                transform.localPosition = new Vector2(transform.localPosition.x, -15.41f);
+            {
+                transform.localPosition = new Vector2(transform.localPosition.x, -15.41f); // Reset position
+            }
+            transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y - 0.25f); // Move position
 
-            transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y - 0.25f);
+            // Calculate the current time interval based on progress
+            float t = (float)i / randomValue; // Calculate the progress from 0 to 1
+            timeIntervel = Mathf.Lerp(startInterval, endInterval, t); // Interpolate between startInterval and endInterval
 
-            // Use the appropriate time interval from the list
-            float t = (float)i / randomValue;
-            int index = Mathf.Min(Mathf.FloorToInt(t * (totalSteps - 1)), totalSteps - 1);
-            timeIntervel = timeIntervals[index];
-
-            yield return new WaitForSeconds(timeIntervel);
+            yield return new WaitForSeconds(timeIntervel); // Wait for the calculated time interval
         }
-        if (transform.localPosition.y == 3.5f)
+
+        float[] stopPosition = { -43.1f, -39.1f, -35.1f, -31.19f, -27.2f, -23.11f, -19f, -15.41f };
+        float mindistance = Mathf.Abs(transform.position.y- stopPosition[0]);
+        float closestPosition = Mathf.Abs(transform.position.y - stopPosition[0]);
+
+        IEnumerator enumerator =stopPosition.GetEnumerator();
+        while (enumerator.MoveNext())
+        {
+            float distance = Mathf.Abs(transform.position.y -(float)enumerator.Current);
+            if((float)enumerator.Current< mindistance)
+            {
+                mindistance = distance;
+                closestPosition = (float)enumerator.Current;   
+            }
+        }
+        transform.localPosition= new Vector2(transform.localPosition.x, closestPosition);
+        if (closestPosition == -43.1f)
             stoppedSloat = "Diamond";
-        else if (transform.localPosition.y == -2.75)
+        else if (closestPosition == -39.1f)
             stoppedSloat = "Crown";
-        else if (transform.localPosition.y == -2)
+        else if (closestPosition == -35.1f)
             stoppedSloat = "Melon";
-        else if (transform.localPosition.y == -1.25)
+        else if (closestPosition == -31.19f)
             stoppedSloat = "Bar";
-        else if (transform.localPosition.y == -0.5f)
+        else if (closestPosition == -27.2f)
             stoppedSloat = "Seven";
-        else if (transform.localPosition.y == 0.25)
+        else if (closestPosition == -23.11f)
             stoppedSloat = "Cherry";
-        else if (transform.localPosition.y == 1)
+        else if (closestPosition == -19f)
             stoppedSloat = "Lemon";
-        else if (transform.localPosition.y == 1.75f)
+        else if (closestPosition == -15.41f)
             stoppedSloat = "Diamond";
         isRowStop=true;
     }
