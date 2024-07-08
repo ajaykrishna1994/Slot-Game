@@ -8,13 +8,17 @@ public class Row : MonoBehaviour
     private float timeIntervel;
     public bool isRowStop;
     public string stoppedSloat;
+    private int rowcount;
+   private GameController gameController;
     // Start is called before the first frame update
 
 
     void Start()
     {
+       
         isRowStop = true;
         GameController.handlePulled += StartRotating;
+        gameController=FindObjectOfType<GameController>();
         // Do not use parentheses when subscribing to an event,
         // as it calls the method immediately instead of subscribing it.
     }
@@ -84,8 +88,7 @@ public class Row : MonoBehaviour
             if(transform.localPosition.y>  (float)enumerator.Current)
 
             {
-                Debug.Log(transform.localPosition.y);
-                //  mindistance = (float)enumerator.Current;
+              
                 closestPosition = (float)enumerator.Current;
              
             }
@@ -108,6 +111,8 @@ public class Row : MonoBehaviour
         else if (closestPosition == -15.41f)
             stoppedSloat = "Diamond";
         isRowStop=true;
+        rowcount++;
+   
     }
     private void OnDestroy()
     {

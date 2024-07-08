@@ -22,19 +22,7 @@ public class GameController : MonoBehaviour
     private bool isResult ;
     void Start()
     {
-        if (rows[0].isRowStop || rows[1].isRowStop || rows[2].isRowStop)
-        {
-            CheckResult();
-            priceText.enabled = true;
-            isResult = false;
-        }
-        if (rows[0].isRowStop && rows[1].isRowStop && rows[2].isRowStop &&! isResult)
-        {
-            CheckResult();
-            priceText.enabled = true;
-            priceText.text = "Prize Value" + prizeValue;
-
-        }
+       
     }
     private void OnMouseDown()
     {
@@ -59,7 +47,7 @@ public class GameController : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
     }
-    private  void CheckResult()
+    public void CheckResult()
     {
         if (rows[0].stoppedSloat == "Diamond" &&
             rows[1].stoppedSloat == "Diamond" &&
@@ -94,6 +82,18 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (rows[0].isRowStop || rows[1].isRowStop || rows[2].isRowStop)
+        {
+            CheckResult();
+            priceText.enabled = true;
+            isResult = false;
+        }
+        if (rows[0].isRowStop && rows[1].isRowStop && rows[2].isRowStop && !isResult)
+        {
+            CheckResult();
+            priceText.enabled = true;
+            priceText.text = "Prize Value" + prizeValue;
+
+        }
     }
 }
