@@ -85,14 +85,14 @@ public class GameController : MonoBehaviour
         if (rows[0].isRowStop || rows[1].isRowStop || rows[2].isRowStop)
         {
             CheckResult();
-            priceText.enabled = true;
+            priceText.enabled = false;
             isResult = false;
         }
         if (rows[0].isRowStop && rows[1].isRowStop && rows[2].isRowStop && !isResult)
         {
             CheckResult();
             priceText.enabled = true;
-            priceText.text = "Prize Value" + prizeValue;
+            priceText.text = "Prize " + prizeValue;
 
         }
     }
