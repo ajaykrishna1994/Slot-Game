@@ -13,6 +13,7 @@ public class dog: Animal
 
     public override void Speak() => Console.WriteLine("Dog speak");
 }
+public delegate Animal AnimalDelegate();
 public class GameManager : MonoBehaviour
 {
     // Start is called before the first frame update
