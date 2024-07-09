@@ -49,51 +49,66 @@ public class GameController : MonoBehaviour
     }
     public void CheckResult()
     {
-        if (rows[0].stoppedSloat == "Diamond" &&
-            rows[1].stoppedSloat == "Diamond" &&
-            rows[2].stoppedSloat == "Diamond")
-            prizeValue = 200;
-       else if (rows[0].stoppedSloat == "Crown" &&
-            rows[1].stoppedSloat == "Crown" &&
-            rows[2].stoppedSloat == "Crown")
-            prizeValue = 400;
-        else if (rows[0].stoppedSloat == "Melon" &&
-          rows[1].stoppedSloat == "Melon" &&
-          rows[2].stoppedSloat == "Melon")
-            prizeValue = 400;
-        else if (rows[0].stoppedSloat == "Bar" &&
-           rows[1].stoppedSloat == "Bar" &&
-           rows[2].stoppedSloat == "Bar")
-            prizeValue = 400;
-        else if (rows[0].stoppedSloat == "Seven" &&
-          rows[1].stoppedSloat == "Seven" &&
-          rows[2].stoppedSloat == "Seven")
-            prizeValue = 400;
-        else if (rows[0].stoppedSloat == "Cherry" &&
-         rows[1].stoppedSloat == "Cherry" &&
-         rows[2].stoppedSloat == "Cherry")
-            prizeValue = 400;
-        else if (rows[0].stoppedSloat == "Lemon" &&
-          rows[1].stoppedSloat == "Lemon" &&
-          rows[2].stoppedSloat == "Lemon")
-            prizeValue = 400;
+        string[] sloatTypes = { "Diamond", "Crown", "Melon", "Bar", "Seven", "Cherry", "Lemon" };
+        int[] prizes = { 200, 400, 400, 400, 400, 400, 400 };
+        for(int i=0;i< sloatTypes.Length;i++)
+        {
+            if (rows[0].stoppedSloat == sloatTypes[i] && rows[1].stoppedSloat == sloatTypes[i] &&
+                rows[2].stoppedSloat == sloatTypes[i])
+            {
+                prizeValue = prizes[i];
+                isResult = true;
+                return;
+            }
+            if ((rows[0].stoppedSloat == "Diamond" && rows[1].stoppedSloat == "Crown" && rows[2].stoppedSloat == "Melon") ||
+        (rows[0].stoppedSloat == "Melon" && rows[1].stoppedSloat == "Diamond" && rows[2].stoppedSloat == "Crown"))
+            {
+                prizeValue = 1000; // Example prize value for specific combination
+                isResult = true;
+                return;
+            }
+            else if ((rows[0].stoppedSloat == "Bar" && rows[1].stoppedSloat == "Seven" && rows[2].stoppedSloat == "Cherry") ||
+                     (rows[0].stoppedSloat == "Cherry" && rows[1].stoppedSloat == "Bar" && rows[2].stoppedSloat == "Seven"))
+            {
+                prizeValue = 750; // Example prize value for another specific combination
+                isResult = true;
+                return;
+            }
+
+            // Extend this section to include other specific combinations as needed
+            // Example: Diamond, Crown, and any other symbol
+            if ((rows[0].stoppedSloat == "Diamond" && rows[1].stoppedSloat == "Crown") ||
+                (rows[0].stoppedSloat == "Crown" && rows[1].stoppedSloat == "Diamond"))
+            {
+                prizeValue = 500; // Example prize value for Diamond and Crown combination
+                isResult = true;
+                return;
+            }
+
+            // If no matches or specific combinations, set prize value to 0
+            prizeValue = 0;
+            isResult = true;
+
+        }
+
         isResult = true;
     }
     // Update is called once per frame
     void Update()
     {
-        if (rows[0].isRowStop || rows[1].isRowStop || rows[2].isRowStop)
+        if (rows[0].isRowStop && rows[1].isRowStop && rows[2].isRowStop)
         {
-            CheckResult();
+            if (!isResult)
+            {
+                CheckResult();
+                priceText.enabled = true;
+                priceText.text = "Prize " + prizeValue;
+            }
+        }
+        else
+        {
             priceText.enabled = false;
             isResult = false;
-        }
-        if (rows[0].isRowStop && rows[1].isRowStop && rows[2].isRowStop && !isResult)
-        {
-            CheckResult();
-            priceText.enabled = true;
-            priceText.text = "Prize " + prizeValue;
-
         }
     }
 }
