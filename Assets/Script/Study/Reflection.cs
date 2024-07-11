@@ -15,7 +15,7 @@ public class SampleClass
     }
 }
 
-public class Reflection 
+public class Reflection : MonoBehaviour
 {
     // type is an instance of the Type class, and it holds metadata information about the SampleClass.
    
@@ -23,9 +23,9 @@ public class Reflection
     {
         // It represents the metadata of a property in a class.
         //Purpose: Represents an entire type (class, interface, enum, etc.).
-
+        //here print class name
         Type type = typeof( SampleClass );
-        Console.WriteLine($"Type Name: {type.Name}");
+      Debug.Log($"Type Name: {type.Name}");
 
         // //Type and PropertyInfo store metadata, but they serve different
         //Represents a single property of a type.
@@ -34,9 +34,16 @@ public class Reflection
 
         foreach (PropertyInfo property in properties)
         {
-            Console.WriteLine(property.Name);
-            Console.WriteLine(property.PropertyType.Name);
+            // print variable name
+            Debug.Log(property.Name);
+            //variable type
+            Debug.Log(property.PropertyType.Name);
         }
+        SampleClass sampleClass = new SampleClass();    
+        
+        PropertyInfo nameProperty= type.GetProperty("Name");
+        nameProperty.SetValue(sampleClass,"aj");
+        string name = (string)nameProperty.GetValue(sampleClass);
     }
 
     // Update is called once per frame
