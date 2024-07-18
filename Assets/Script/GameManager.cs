@@ -3,17 +3,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Animal
+public class TotalMoney
 {
-    public virtual void Speak() => Console.WriteLine("Animal speaks");
+    public int Totalearning {  get; set; }    
+}
+public class SeaonBonus
+{
+    public int bonus { get; set; }
+}
+public interface ICovariant<out T>
+{
+    T GetItem();
+}
+public class MoneyManager: ICovariant<SeaonBonus>
+{
+    private SeaonBonus SeaonBonus;
+    public MoneyManager(SeaonBonus seaonBonus)
+    {
+        SeaonBonus = seaonBonus;
+    }
+    public SeaonBonus GetItem()
+    {
+        return SeaonBonus;
+
+    }
+}
+public class CashCollecter
+{
+    public virtual void Speak() => Console.WriteLine("start");
 
 }
-public class dog: Animal
+public class dog: CashCollecter
 {
 
-    public override void Speak() => Console.WriteLine("Dog speak");
+    public override void Speak() => Console.WriteLine("win");
 }
-public delegate Animal AnimalDelegate();
 public class GameManager : MonoBehaviour
 {
     // Start is called before the first frame update
